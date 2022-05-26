@@ -7,6 +7,8 @@ const FRICTION = 500
 const ACCELERATION = 500
 
 onready var animationPlayer = $AnimationPlayer
+onready var animationTree = $AnimationTree
+onready var animationState = animationTree.get("parameters/playback")
 
 func _physics_process(delta):
 	# delta = time taken by last frame to process
@@ -19,11 +21,14 @@ func _physics_process(delta):
 		velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
 #		direction_to Gives jittery effect
 #		velocity = velocity.direction_to(Vector2.ZERO)* FRICTION * delta
-		animationPlayer.play("IdleDown")
+		animationState.travel("Idle")
 	else:
 		velocity = velocity.move_toward(input_vector * MAX_SPEED, ACCELERATION * delta)
-		animationPlayer.play("RunRight")
-	move_and_collide(velocity * delta)
+		animationTree.set("parameters/Idle/blend_position", input_vector)
+		animationTree.set("parameters/Run/blend_position", input_vector)
+		animationState.travel("Run")
+#	move_and_collide(velocity * delta)
+	move_and_slide(velocity)
 
 
 #export (int) var speed = 200
