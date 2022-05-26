@@ -1,9 +1,13 @@
 extends KinematicBody2D
 
 var velocity = Vector2.ZERO
+
 const MAX_SPEED = 80
 const FRICTION = 500
 const ACCELERATION = 500
+
+onready var animationPlayer = $AnimationPlayer
+
 func _physics_process(delta):
 	# delta = time taken by last frame to process
 	var input_vector = Vector2.ZERO
@@ -15,8 +19,10 @@ func _physics_process(delta):
 		velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
 #		direction_to Gives jittery effect
 #		velocity = velocity.direction_to(Vector2.ZERO)* FRICTION * delta
+		animationPlayer.play("IdleDown")
 	else:
 		velocity = velocity.move_toward(input_vector * MAX_SPEED, ACCELERATION * delta)
+		animationPlayer.play("RunRight")
 	move_and_collide(velocity * delta)
 
 
