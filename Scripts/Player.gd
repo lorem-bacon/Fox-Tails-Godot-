@@ -10,8 +10,29 @@ onready var animationPlayer = $AnimationPlayer
 onready var animationTree = $AnimationTree
 onready var animationState = animationTree.get("parameters/playback")
 
+enum {
+	MOVE,
+	ROLL,
+	ATTACK
+}
+
+var state = MOVE
+
+func _ready():
+	animationTree.active = true
+
+
 func _physics_process(delta):
 	# delta = time taken by last frame to process
+	match state:
+		MOVE:
+			move_state(delta)
+		ROLL:
+			roll_state(delta)
+		ATTACK:
+			attack_state()
+
+func move_state(delta):
 	var input_vector = Vector2.ZERO
 	input_vector.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
 	input_vector.y = Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
@@ -26,23 +47,27 @@ func _physics_process(delta):
 		velocity = velocity.move_toward(input_vector * MAX_SPEED, ACCELERATION * delta)
 		animationTree.set("parameters/Idle/blend_position", input_vector)
 		animationTree.set("parameters/Run/blend_position", input_vector)
+		animationTree.set("parameters/Attack/blend_position", input_vector)
+		animationTree.set("parameters/Roll/blend_position", input_vector)
 		animationState.travel("Run")
 #	move_and_collide(velocity * delta)
-	move_and_slide(velocity)
+	velocity = move_and_slide(velocity)
+	
+	if Input.is_action_just_pressed("custom_attack"):
+		state = ATTACK
+	if Input.is_action_just_pressed("custom_roll"):
+		state = ROLL
 
+func attack_state():
+	velocity = Vector2.ZERO
+	animationState.travel("Attack")
 
-#export (int) var speed = 200
-#
-#var target = Vector2()
-#var velocity = Vector2()
-#
-#func _input(event):
-#	if event.is_action_pressed("click"):
-#		target = get_global_mouse_position()
-#		print(target)
-#
-#func _physics_process(delta):
-#	velocity = position.direction_to(target) * speed
-#	# look_at(target)
-#	if position.distance_to(target) > 5:
-#		velocity = move_and_slide(velocity)
+func roll_state(delta):
+	animationState.travel("Roll")
+	velocity = move_and_slide(velocity)
+
+func attack_animation_finished():
+	state = MOVE
+
+func roll_animation_finished():
+	state = MOVE
