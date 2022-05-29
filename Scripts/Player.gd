@@ -28,7 +28,7 @@ func _physics_process(delta):
 		MOVE:
 			move_state(delta)
 		ROLL:
-			roll_state(delta)
+			roll_state()
 		ATTACK:
 			attack_state()
 
@@ -50,19 +50,20 @@ func move_state(delta):
 		animationTree.set("parameters/Attack/blend_position", input_vector)
 		animationTree.set("parameters/Roll/blend_position", input_vector)
 		animationState.travel("Run")
+		
+		if Input.is_action_just_pressed("custom_roll"):
+			state = ROLL
 #	move_and_collide(velocity * delta)
 	velocity = move_and_slide(velocity)
 	
 	if Input.is_action_just_pressed("custom_attack"):
 		state = ATTACK
-	if Input.is_action_just_pressed("custom_roll"):
-		state = ROLL
 
 func attack_state():
 	velocity = Vector2.ZERO
 	animationState.travel("Attack")
 
-func roll_state(delta):
+func roll_state():
 	animationState.travel("Roll")
 	velocity = move_and_slide(velocity)
 
