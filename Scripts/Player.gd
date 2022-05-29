@@ -20,6 +20,7 @@ var state = MOVE
 
 func _ready():
 	animationTree.active = true
+	$Position2D/Hitbox/CollisionShape2D.disabled = true
 
 
 func _physics_process(delta):
