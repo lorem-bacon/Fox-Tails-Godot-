@@ -3,6 +3,7 @@ extends KinematicBody2D
 var velocity = Vector2.ZERO
 
 const MAX_SPEED = 80
+const ROLL_SPEED = 120
 const FRICTION = 500
 const ACCELERATION = 500
 
@@ -53,6 +54,7 @@ func move_state(delta):
 		animationState.travel("Run")
 		
 		if Input.is_action_just_pressed("custom_roll"):
+			velocity = input_vector * ROLL_SPEED
 			state = ROLL
 #	move_and_collide(velocity * delta)
 	velocity = move_and_slide(velocity)
@@ -72,4 +74,5 @@ func attack_animation_finished():
 	state = MOVE
 
 func roll_animation_finished():
+	velocity = velocity * 0.7
 	state = MOVE
