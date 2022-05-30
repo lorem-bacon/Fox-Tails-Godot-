@@ -10,6 +10,7 @@ const ACCELERATION = 500
 onready var animationPlayer = $AnimationPlayer
 onready var animationTree = $AnimationTree
 onready var animationState = animationTree.get("parameters/playback")
+onready var swordHitbox = $Position2D/Hitbox
 
 enum {
 	MOVE,
@@ -22,6 +23,7 @@ var state = MOVE
 func _ready():
 	animationTree.active = true
 	$Position2D/Hitbox/CollisionShape2D.disabled = true
+	swordHitbox.knockBackVector = Vector2.ZERO
 
 
 func _physics_process(delta):
@@ -40,6 +42,7 @@ func move_state(delta):
 	input_vector.y = Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
 	input_vector = input_vector.normalized()
 
+	swordHitbox.knockBackVector = input_vector
 	if input_vector == Vector2.ZERO:
 		velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
 #		direction_to Gives jittery effect
