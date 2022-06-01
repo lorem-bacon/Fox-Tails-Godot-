@@ -56,5 +56,5 @@ frames = SubResource( 11 )
 animation = "Animate"
 frame = 9
 centered = false
-offset = Vector2( -8, -24 )
+offset = Vector2( -16, -24 )
 script = ExtResource( 2 )
