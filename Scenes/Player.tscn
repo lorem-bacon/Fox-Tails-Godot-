@@ -1,9 +1,10 @@
-[gd_scene load_steps=53 format=2]
+[gd_scene load_steps=54 format=2]
 
 [ext_resource path="res://Scripts/Player.gd" type="Script" id=1]
 [ext_resource path="res://Player/Player.png" type="Texture" id=2]
 [ext_resource path="res://Scenes/Hitbox.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Scripts/SwordHitbox.gd" type="Script" id=4]
+[ext_resource path="res://Shadows/MediumShadow.png" type="Texture" id=5]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 5.0
@@ -657,6 +658,11 @@ height = 14.0
 collision_layer = 2
 script = ExtResource( 1 )
 
+[node name="Shadow" type="Sprite" parent="."]
+position = Vector2( -1, 3 )
+scale = Vector2( 0.8, 1 )
+texture = ExtResource( 5 )
+
 [node name="Sprite" type="Sprite" parent="."]
 position = Vector2( -1, -7 )
 texture = ExtResource( 2 )
@@ -690,10 +696,10 @@ anims/RunUp = SubResource( 10 )
 tree_root = SubResource( 11 )
 anim_player = NodePath("../AnimationPlayer")
 parameters/playback = SubResource( 12 )
-parameters/Attack/blend_position = Vector2( 0.137876, 0.399528 )
-parameters/Idle/blend_position = Vector2( 0, 0 )
-parameters/Roll/blend_position = Vector2( -0.0031696, -0.752358 )
-parameters/Run/blend_position = Vector2( 0.177496, -0.433032 )
+parameters/Attack/blend_position = Vector2( 0, 1 )
+parameters/Idle/blend_position = Vector2( 0, 1 )
+parameters/Roll/blend_position = Vector2( 0, 1 )
+parameters/Run/blend_position = Vector2( 0, 1 )
 
 [node name="Position2D" type="Position2D" parent="."]
 position = Vector2( -1, -1 )
@@ -702,7 +708,6 @@ position = Vector2( -1, -1 )
 collision_layer = 4
 collision_mask = 8
 script = ExtResource( 4 )
-damage = 2
 
 [node name="CollisionShape2D" parent="Position2D/Hitbox" index="0"]
 position = Vector2( 15, -1 )
