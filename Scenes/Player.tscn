@@ -731,7 +731,6 @@ shape = SubResource( 50 )
 
 [connection signal="area_entered" from="PlayerHurtbox" to="." method="_on_PlayerHurtbox_area_entered"]
 [connection signal="area_exited" from="PlayerHurtbox" to="." method="_on_PlayerHurtbox_area_exited"]
-[connection signal="no_health" from="PlayerStats" to="." method="_on_PlayerStats_no_health"]
 
 [editable path="Position2D/Hitbox"]
 [editable path="PlayerHurtbox"]

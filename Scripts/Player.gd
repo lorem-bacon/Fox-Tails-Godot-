@@ -11,8 +11,9 @@ onready var animationPlayer = $AnimationPlayer
 onready var animationTree = $AnimationTree
 onready var animationState = animationTree.get("parameters/playback")
 onready var swordHitbox = $Position2D/Hitbox
-onready var playerStats = $PlayerStats
 onready var playerHurtBox = $PlayerHurtbox
+
+var EnemyHitEffect = preload("res://Effects/EnemyHitEffect.tscn")
 
 enum {
 	MOVE,
@@ -26,6 +27,7 @@ func _ready():
 	animationTree.active = true
 	$Position2D/Hitbox/CollisionShape2D.disabled = true
 	swordHitbox.knockBackVector = Vector2.ZERO
+	PlayerStats.connect("no_health", self, "_on_PlayerStats_no_health")
 
 
 func _physics_process(delta):
@@ -84,8 +86,11 @@ func roll_animation_finished():
 
 
 func _on_PlayerHurtbox_area_entered(area):
-	playerStats.health -= 1
-	print(playerStats.health)
+	PlayerStats.health -= 1
+	print(PlayerStats.health)
+	var enemyHitEffect = EnemyHitEffect.instance()
+	enemyHitEffect.global_position = global_position
+	get_tree().current_scene.add_child(enemyHitEffect)
 	playerHurtBox.set_deferred("monitorable", false)
 
 
