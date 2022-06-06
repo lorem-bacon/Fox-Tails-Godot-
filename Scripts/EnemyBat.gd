@@ -36,7 +36,7 @@ func _physics_process(delta):
 			chase_player(delta)
 		WANDER:
 			pass
-	move_and_slide(velocity)
+	velocity = move_and_slide(velocity)
 
 func _on_HurtBox_area_entered(area):
 	stats.health -= area.damage
@@ -68,6 +68,5 @@ func chase_player(delta):
 
 func seek_player_inside_detection_zone():
 	if playerDetectionZone.player != null:
-		print('player found')
 		enemyState = CHASE
 	

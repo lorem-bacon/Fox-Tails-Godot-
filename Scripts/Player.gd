@@ -11,6 +11,8 @@ onready var animationPlayer = $AnimationPlayer
 onready var animationTree = $AnimationTree
 onready var animationState = animationTree.get("parameters/playback")
 onready var swordHitbox = $Position2D/Hitbox
+onready var playerStats = $PlayerStats
+onready var playerHurtBox = $PlayerHurtbox
 
 enum {
 	MOVE,
@@ -79,3 +81,17 @@ func attack_animation_finished():
 func roll_animation_finished():
 	velocity = velocity * 0.7
 	state = MOVE
+
+
+func _on_PlayerHurtbox_area_entered(area):
+	playerStats.health -= 1
+	print(playerStats.health)
+	playerHurtBox.set_deferred("monitorable", false)
+
+
+func _on_PlayerHurtbox_area_exited(area):
+	playerHurtBox.set_deferred("monitorable", true)
+
+
+func _on_PlayerStats_no_health():
+	queue_free()
