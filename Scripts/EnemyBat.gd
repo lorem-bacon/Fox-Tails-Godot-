@@ -4,6 +4,7 @@ onready var animatedSprite = $AnimatedSprite
 onready var knockBack = Vector2.RIGHT
 onready var stats = $Stats
 onready var playerDetectionZone = $PlayerDetectionZone
+onready var softCollision = $SoftCollision
 
 var BatEnemyDeathEffect = preload("res://Effects/BatEnemyDeathEffect.tscn")
 var EnemyHitEffect = preload("res://Effects/EnemyHitEffect.tscn")
@@ -36,6 +37,8 @@ func _physics_process(delta):
 			chase_player(delta)
 		WANDER:
 			pass
+	if softCollision.is_colliding():
+		velocity += softCollision.get_push_vector() * delta * 400
 	velocity = move_and_slide(velocity)
 
 func _on_HurtBox_area_entered(area):
