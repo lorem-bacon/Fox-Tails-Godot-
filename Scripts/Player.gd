@@ -12,6 +12,7 @@ onready var animationTree = $AnimationTree
 onready var animationState = animationTree.get("parameters/playback")
 onready var swordHitbox = $Position2D/Hitbox
 onready var playerHurtBox = $PlayerHurtbox
+onready var playerStats = PlayerStats
 
 var EnemyHitEffect = preload("res://Effects/EnemyHitEffect.tscn")
 
@@ -27,7 +28,7 @@ func _ready():
 	animationTree.active = true
 	$Position2D/Hitbox/CollisionShape2D.disabled = true
 	swordHitbox.knockBackVector = Vector2.ZERO
-	PlayerStats.connect("no_health", self, "_on_PlayerStats_no_health")
+	playerStats.connect("no_health", self, "_on_PlayerStats_no_health")
 
 
 func _physics_process(delta):
@@ -86,8 +87,8 @@ func roll_animation_finished():
 
 
 func _on_PlayerHurtbox_area_entered(area):
-	PlayerStats.health -= 1
-	print(PlayerStats.health)
+	playerStats.health -= 1
+	print(playerStats.health)
 	var enemyHitEffect = EnemyHitEffect.instance()
 	enemyHitEffect.global_position = global_position
 	get_tree().current_scene.add_child(enemyHitEffect)
