@@ -1,0 +1,61 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://World/GrassBackground.png" type="Texture" id=1]
+[ext_resource path="res://UI/Button.png" type="Texture" id=2]
+[ext_resource path="res://Scripts/PlayButton.gd" type="Script" id=3]
+
+[sub_resource type="StyleBoxEmpty" id=7]
+
+[sub_resource type="StyleBoxEmpty" id=5]
+
+[sub_resource type="StyleBoxEmpty" id=8]
+
+[sub_resource type="StyleBoxEmpty" id=9]
+
+[sub_resource type="StyleBoxEmpty" id=6]
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 0, 384, 216 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 2 )
+region = Rect2( 384, 0, 384, 216 )
+
+[sub_resource type="SpriteFrames" id=4]
+animations = [ {
+"frames": [ SubResource( 1 ), SubResource( 2 ) ],
+"loop": false,
+"name": "Animate",
+"speed": 5.0
+} ]
+
+[node name="CanvasLayer" type="CanvasLayer"]
+
+[node name="Background" type="Sprite" parent="."]
+position = Vector2( 160, 90 )
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 320, 180 )
+
+[node name="PlayButton" type="Button" parent="."]
+margin_left = 133.0
+margin_top = 55.0
+margin_right = 187.0
+margin_bottom = 125.0
+rect_scale = Vector2( 0.8, 0.75 )
+custom_styles/hover = SubResource( 7 )
+custom_styles/pressed = SubResource( 5 )
+custom_styles/focus = SubResource( 8 )
+custom_styles/disabled = SubResource( 9 )
+custom_styles/normal = SubResource( 6 )
+text = "Play"
+script = ExtResource( 3 )
+
+[node name="Button" type="AnimatedSprite" parent="PlayButton"]
+position = Vector2( 49, 24 )
+frames = SubResource( 4 )
+animation = "Animate"
+
+[connection signal="button_down" from="PlayButton" to="PlayButton" method="_on_PlayButton_button_down"]
+[connection signal="button_up" from="PlayButton" to="PlayButton" method="_on_PlayButton_button_up"]
