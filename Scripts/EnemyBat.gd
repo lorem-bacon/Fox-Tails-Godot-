@@ -40,13 +40,15 @@ func _physics_process(delta):
 		WANDER:
 			var direction_vector = wandererManager.get_direction_to_return_to()
 			var has_direction_reversed = wanderDirectionFlag + (direction_vector.x / abs(direction_vector.x))
-
+			
 			if has_direction_reversed == 0.0:
 				enemyState = IDLE
+				wanderDirectionFlag = 0
 			else:
 				velocity = velocity.move_toward(direction_vector * MAX_SPEED / 2, ACCELERATION * delta)
 				animatedSprite.flip_h = direction_vector.x < 0
 				wanderDirectionFlag = direction_vector.x / abs(direction_vector.x)
+			seek_player_inside_detection_zone()
 
 	if softCollision.is_colliding():
 		velocity += softCollision.get_push_vector() * delta * 400
@@ -83,4 +85,5 @@ func chase_player(delta):
 func seek_player_inside_detection_zone():
 	if playerDetectionZone.player != null:
 		enemyState = CHASE
+		wanderDirectionFlag = 0
 	
