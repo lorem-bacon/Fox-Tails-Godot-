@@ -5,6 +5,7 @@ onready var knockBack = Vector2.RIGHT
 onready var stats = $Stats
 onready var playerDetectionZone = $PlayerDetectionZone
 onready var softCollision = $SoftCollision
+onready var wandererManager = $WandereManagerNode
 
 var BatEnemyDeathEffect = preload("res://Effects/BatEnemyDeathEffect.tscn")
 var EnemyHitEffect = preload("res://Effects/EnemyHitEffect.tscn")
@@ -36,7 +37,13 @@ func _physics_process(delta):
 		CHASE:
 			chase_player(delta)
 		WANDER:
-			pass
+			if wandererManager.on_final_destination():
+				enemyState = IDLE
+			else:
+				var direction_vector = wandererManager.get_direction_to_return_to()
+				velocity = velocity.move_toward(direction_vector * MAX_SPEED, ACCELERATION * delta)
+				animatedSprite.flip_h = direction_vector.x < 0
+
 	if softCollision.is_colliding():
 		velocity += softCollision.get_push_vector() * delta * 400
 	velocity = move_and_slide(velocity)
@@ -65,7 +72,7 @@ func chase_player(delta):
 		velocity = velocity.move_toward(enemyMoveDirection * MAX_SPEED, ACCELERATION * delta)
 		animatedSprite.flip_h = enemyMoveDirection.x < 0
 	else:
-		enemyState = IDLE
+		enemyState = WANDER
 		
 
 
