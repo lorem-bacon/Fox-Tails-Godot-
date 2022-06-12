@@ -22,6 +22,7 @@ enum {
 
 var enemyState = IDLE
 var velocity = Vector2.ZERO
+var wanderDirectionFlag = 0
 
 func _ready():
 	animatedSprite.playing = true
@@ -37,12 +38,15 @@ func _physics_process(delta):
 		CHASE:
 			chase_player(delta)
 		WANDER:
-			if wandererManager.on_final_destination():
+			var direction_vector = wandererManager.get_direction_to_return_to()
+			var has_direction_reversed = wanderDirectionFlag + (direction_vector.x / abs(direction_vector.x))
+
+			if has_direction_reversed == 0.0:
 				enemyState = IDLE
 			else:
-				var direction_vector = wandererManager.get_direction_to_return_to()
-				velocity = velocity.move_toward(direction_vector * MAX_SPEED, ACCELERATION * delta)
+				velocity = velocity.move_toward(direction_vector * MAX_SPEED / 2, ACCELERATION * delta)
 				animatedSprite.flip_h = direction_vector.x < 0
+				wanderDirectionFlag = direction_vector.x / abs(direction_vector.x)
 
 	if softCollision.is_colliding():
 		velocity += softCollision.get_push_vector() * delta * 400
