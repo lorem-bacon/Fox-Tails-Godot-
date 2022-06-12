@@ -87,7 +87,7 @@ func roll_animation_finished():
 
 
 func _on_PlayerHurtbox_area_entered(area):
-	playerStats.health -= 1
+	playerStats.health -= area.damage
 	var enemyHitEffect = EnemyHitEffect.instance()
 	enemyHitEffect.global_position = global_position
 	get_tree().current_scene.add_child(enemyHitEffect)
